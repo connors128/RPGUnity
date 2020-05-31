@@ -15,8 +15,8 @@ public class mouseCameraController : MonoBehaviour {
 	public float maxZoom = 15f;		// Max zoom amount
 
 	public float pitch = 2f;		// Pitch up the camera to look at head
-	public float yawSpeed = 100f;   // How quickly we rotate
-	public float pitchSpeed = 100f;
+	public float yawSpeed = 200f;   // How quickly we rotate
+	public float pitchSpeed = 200f;
 
 
 	// In these variables we store input from Update
@@ -32,7 +32,7 @@ public class mouseCameraController : MonoBehaviour {
 
 		// Adjust our camera's rotation around the player
 		currentYaw -= Input.GetAxis("Mouse X") * yawSpeed * Time.deltaTime;
-		currentPitch -= Input.GetAxis("Mouse Y") * pitchSpeed * Time.deltaTime;
+		currentPitch += Input.GetAxis("Mouse Y") * pitchSpeed * Time.deltaTime;
 	}
 
 	void LateUpdate ()
@@ -44,8 +44,12 @@ public class mouseCameraController : MonoBehaviour {
 		transform.LookAt(target.position + Vector3.up * pitch);
 
 		// Rotate around the player
-		transform.RotateAround(target.position, Vector3.up, currentYaw);
+		transform.RotateAround(target.position, target.up, currentYaw);
+		transform.RotateAround(target.position, target.right, currentPitch);
+		transform.RotateAround(target.position, target.forward, target.rotation.z);
+		//transform.RotateAround(transform.position, transform.up, currentYaw);
 		//transform.eulerAngles = new Vector3(currentPitch, currentYaw, 0f);
+		//transform.Rotate(0, target.up, 0, Space.Self);
 	}
 
 }
