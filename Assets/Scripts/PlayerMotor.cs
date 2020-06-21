@@ -22,8 +22,8 @@ public class PlayerMotor : MonoBehaviour {
 		if (target != null)
 		{
 			// Move towards it and look at it
-			agent.SetDestination(target.position);
-			FaceTarget();
+			//agent.SetDestination(target.position);
+			//FaceTarget();
 		}
 	}
 	

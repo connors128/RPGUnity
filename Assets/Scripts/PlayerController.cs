@@ -4,20 +4,21 @@ using UnityEngine;
 
 /* Controls the player. Here we choose our "focus" and where to move. */
 
-[RequireComponent(typeof(PlayerMotor))]
 public class PlayerController : MonoBehaviour {
 
 	public Interactable focus;	// Our current focus: Item, Enemy etc.
 
 	public LayerMask movementMask;	// Filter out everything not walkable
 
+	private Collider _collider;
+	
+	
 	Camera cam;			// Reference to our camera
-	PlayerMotor motor;	// Reference to our motor
 
 	// Get references
 	void Start () {
 		cam = Camera.main;
-		motor = GetComponent<PlayerMotor>();
+		_collider = GetComponent<CharacterController>();
 	}
 	
 	// Update is called once per frame
@@ -33,26 +34,18 @@ public class PlayerController : MonoBehaviour {
 			// If the ray hits
 			if (Physics.Raycast(ray, out hit, 100, movementMask))
 			{
-				motor.MoveToPoint(hit.point);   // Move to where we hit
+				//motor.MoveToPoint(hit.point);   // Move to where we hit
 				RemoveFocus();
 			}
 		}
 
-		// If we press right mouse
+		// needs to be capsule collider component
 		if (Input.GetMouseButtonDown(1))
 		{
-			// We create a ray
-			Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
-
-			// If the ray hits
-			if (Physics.Raycast(ray, out hit, 100))
+			Interactable interactable = _collider.GetComponent<Interactable>();
+			if (interactable != null)
 			{
-				Interactable interactable = hit.collider.GetComponent<Interactable>();
-				if (interactable != null)
-				{
-					SetFocus(interactable);
-				}
+				SetFocus(interactable);
 			}
 		}
 	}
@@ -68,7 +61,7 @@ public class PlayerController : MonoBehaviour {
 				focus.OnDefocused();
 
 			focus = newFocus;	// Set our new focus
-			motor.FollowTarget(newFocus);	// Follow the new focus
+			//motor.FollowTarget(newFocus);	// Follow the new focus
 		}
 		
 		newFocus.OnFocused(transform);
@@ -81,6 +74,6 @@ public class PlayerController : MonoBehaviour {
 			focus.OnDefocused();
 
 		focus = null;
-		motor.StopFollowingTarget();
+		//motor.StopFollowingTarget();
 	}
 }

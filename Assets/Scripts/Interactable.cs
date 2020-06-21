@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /*	
@@ -8,33 +9,33 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour {
 
-	public float radius = 3f;				// How close do we need to be to interact?
+	public float radius = 1f;				// How close do we need to be to interact?
 	public Transform interactionTransform;	// The transform from where we interact in case you want to offset it
 
-	bool isFocus = false;	// Is this interactable currently being focused?
-	Transform player;		// Reference to the player transform
+	private bool _isFocus = false;	// Is this interactable currently being focused?
+	[SerializeField] private Transform _player;		// Reference to the player transform
 
-	bool hasInteracted = false;	// Have we already interacted with the object?
+	private bool _hasInteracted = false;	// Have we already interacted with the object?
 
 	public virtual void Interact ()
 	{
 		// This method is meant to be overwritten
-		Debug.Log("Interacting with " + transform.name);
+		//Debug.Log("Interacting with " + transform.name);
 	}
 
 	void Update ()
 	{
 		// If we are currently being focused
 		// and we haven't already interacted with the object
-		if (isFocus && !hasInteracted)
+		if (!_hasInteracted) //&& _isFocus)
 		{
 			// If we are close enough
-			float distance = Vector3.Distance(player.position, interactionTransform.position);
+			float distance = Vector3.Distance(_player.position, interactionTransform.position);
 			if (distance <= radius)
 			{
 				// Interact with the object
 				Interact();
-				hasInteracted = true;
+				_hasInteracted = true;
 			}
 		}
 	}
@@ -42,22 +43,25 @@ public class Interactable : MonoBehaviour {
 	// Called when the object starts being focused
 	public void OnFocused (Transform playerTransform)
 	{
-		isFocus = true;
-		player = playerTransform;
-		hasInteracted = false;
+		_isFocus = true;
+		_player = playerTransform;
+		_hasInteracted = false;
 	}
 
 	// Called when the object is no longer focused
 	public void OnDefocused ()
 	{
-		isFocus = false;
-		player = null;
-		hasInteracted = false;
+		_isFocus = false;
+		_player = null;
+		_hasInteracted = false;
 	}
 
 	// Draw our radius in the editor
 	void OnDrawGizmosSelected ()
 	{
+		if (interactionTransform == null)
+			interactionTransform = transform;
+
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawWireSphere(interactionTransform.position, radius);
 	}

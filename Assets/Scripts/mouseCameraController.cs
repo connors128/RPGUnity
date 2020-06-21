@@ -7,22 +7,22 @@ using UnityEngine;
 
 public class mouseCameraController : MonoBehaviour {
 
-	public Transform target;	// Target to follow (player)
+	public Transform target;
 
-	public Vector3 offset;			// Offset from the player
-	public float zoomSpeed = 4f;	// How quickly we zoom
-	public float minZoom = 5f;		// Min zoom amount
-	public float maxZoom = 15f;		// Max zoom amount
+	public Vector3 offset;
+	public float zoomSpeed = 4f;
+	public float minZoom = 5f;
+	public float maxZoom = 15f;
 
 	public float pitch = 2f;		// Pitch up the camera to look at head
-	public float yawSpeed = 200f;   // How quickly we rotate
-	public float pitchSpeed = 200f;
-
+	public float yawSpeed = 200f;   // horizontal rotate speed
+	public float pitchSpeed = 200f; // vertical rotate speed
 
 	// In these variables we store input from Update
-	private float currentZoom = 10f;
+	private float currentZoom = 10f; // starting zoom
 	private float currentYaw = 0f;
 	private float currentPitch = 0f;
+	
 
 	void Update ()
 	{
@@ -32,7 +32,21 @@ public class mouseCameraController : MonoBehaviour {
 
 		// Adjust our camera's rotation around the player
 		currentYaw -= Input.GetAxis("Mouse X") * yawSpeed * Time.deltaTime;
-		currentPitch += Input.GetAxis("Mouse Y") * pitchSpeed * Time.deltaTime;
+
+		while (currentPitch > 360 || currentPitch < -360)
+		{
+			currentPitch /= 360;
+			Debug.Log(currentPitch);
+		}
+
+		if (currentPitch <= 90 && currentPitch >= -90)
+		{
+			currentPitch += Input.GetAxis("Mouse Y") * pitchSpeed * Time.deltaTime;
+			if (currentPitch > 90)
+				currentPitch = 90f;
+			else if (currentPitch < -90)
+				currentPitch = -90f;
+		}
 	}
 
 	void LateUpdate ()
@@ -41,15 +55,16 @@ public class mouseCameraController : MonoBehaviour {
 		transform.position = target.position - offset * currentZoom;
 
 		// Look at the player's head
-		transform.LookAt(target.position + Vector3.up * pitch);
+		transform.LookAt(target.position + (Vector3.up + Vector3.up) * pitch);
 
 		// Rotate around the player
-		transform.RotateAround(target.position, target.up, currentYaw);
-		transform.RotateAround(target.position, target.right, currentPitch);
-		transform.RotateAround(target.position, target.forward, target.rotation.z);
-		//transform.RotateAround(transform.position, transform.up, currentYaw);
-		//transform.eulerAngles = new Vector3(currentPitch, currentYaw, 0f);
-		//transform.Rotate(0, target.up, 0, Space.Self);
+		transform.RotateAround(target.position, transform.up, currentYaw); //x
+		//clamp x between -90 and 90
+		
+		transform.RotateAround(target.position, transform.right, currentPitch); //y
+		
+		//clamp z between -90 and 90
+		transform.RotateAround(target.position, transform.forward, transform.rotation.z); //z
 	}
 
 }

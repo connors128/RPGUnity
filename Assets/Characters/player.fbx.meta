@@ -12,7 +12,52 @@ ModelImporter:
   - first:
       74: -611463042870164481
     second: Armature|MyWalk
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black
+    second: {fileID: 2100000, guid: 9a3a0c4e41d1e0c4bad32bd8c56bf21a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DarkMetal
+    second: {fileID: 2100000, guid: ba27d962d5765c041a0c8d0233564ade, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hair
+    second: {fileID: 2100000, guid: 3de6240d4e2d9d444898206f397d42cf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal
+    second: {fileID: 2100000, guid: 7863f108c8085604d97e02c5d8a66da9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pants
+    second: {fileID: 2100000, guid: 711903e35af750045a4898261b5c1f93, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Shirt
+    second: {fileID: 2100000, guid: c6b4bd78c6889cb44944ed26ad997659, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Shoes
+    second: {fileID: 2100000, guid: 6676e8d17ac94314997f5b2147e606c0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Skin
+    second: {fileID: 2100000, guid: c9458ec21783d0449af60a02c81cb6e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Underclothes
+    second: {fileID: 2100000, guid: 46002a67ad14df74091b1e20ff3a7082, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -33,6 +78,9 @@ ModelImporter:
       and has rotation animation that will be discarded.\n\nClip 'Armature|MyWalk'
       has import animation warnings that might lower retargeting quality:\nNote:
       Activate translation DOF on avatar to improve retargeting quality.\n\t'Torso'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'Armature|MyWalk.001' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'Torso'
       is inbetween humanoid transforms and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
