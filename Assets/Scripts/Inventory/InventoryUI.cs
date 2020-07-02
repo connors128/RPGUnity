@@ -1,4 +1,5 @@
-﻿﻿using UnityEngine;
+﻿﻿using UnityEditor.Build;
+ using UnityEngine;
 
 /* This object updates the inventory UI. */
 
@@ -7,15 +8,14 @@ public class InventoryUI : MonoBehaviour {
     public Transform itemsParent;	// The parent object of all the items
     public GameObject inventoryUI;	// The entire UI
 
-    Inventory inventory;	// Our current inventory
-
-    InventorySlot[] slots;	// List of all the slots
-    int i = 0;
-
-    void Start () {
+    Inventory inventory;	// The current inventory
+    public static InventorySlot[] slots;	// List of all the UIslots
+    
+    static int atSlot = 0;
+   void Start () {
         inventory = Inventory.instance;
-        inventory.onItemChangedCallback += UpdateUI;	// Subscribe to the onItemChanged callback
-
+        inventory.onItemAddCallback += AddToUI;	// Subscribe to the onItemChanged callback
+        inventory.onItemRemoveCallback += RemoveFromUI;
         // Populate our slots array
         slots = itemsParent.GetComponentsInChildren<InventorySlot>();
     }
@@ -28,28 +28,30 @@ public class InventoryUI : MonoBehaviour {
         }
     }
 
-    // Update the inventory UI by:
-    //		- Adding items
-    //		- Clearing empty slots
-    // This is called using a delegate on the Inventory.
-    public void UpdateUI()
+    void AddToUI()
     {
-        for (i = 0; i < slots.Length; i++) //slots.length = 20
+        slots[atSlot].AddItem(inventory.items[atSlot]);
+        atSlot++;
+    }
+
+    void RemoveFromUI()
+    {
+        int removeSlot = Inventory.removingSlot;
+        Debug.Log(removeSlot);
+        slots[removeSlot].ClearSlot();
+        slots[removeSlot].item = null;
+        atSlot--;
+        for (; removeSlot < inventory.items.Count; removeSlot++)
         {
-            if (i < inventory.items.Count) // If there is an item to add
+            slots[removeSlot].AddItem(slots[removeSlot + 1].item);
+            if(slots[removeSlot].item != null)
             {
-                Debug.Log(inventory.items.Count + " in array");
-                Debug.Log("Adding slot in: " + i); //i is always 0, does not work
-                slots[i].AddItem(inventory.items[i]); // Add it
-                Debug.Log("after item should have been added to UI");
+                slots[removeSlot].ClearSlot();
+                slots[removeSlot].item = null;
+                break;
             }
-            else
-            {
-                // Otherwise clear the slot
-                Debug.Log("slot was cleared"); //not called
-                //slots[i].ClearSlot();
-            }
-            i++;
+            //slots[removeSlot].item = inventory.items[removeSlot+1];
         }
+        slots[removeSlot+1].ClearSlot();
     }
 }

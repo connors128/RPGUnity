@@ -17,8 +17,6 @@ public class ItemPickup : Interactable {
         Debug.Log("Picking up " + item.name);
         var wasPickedUp = Inventory.instance.Add(item);	// Add to inventory
         
-        Debug.Log("wasPickedUp = " + wasPickedUp); // should be true
-        
         // If successfully picked up
         if (!wasPickedUp) return;
         Destroy(gameObject);	// Destroy item from scene

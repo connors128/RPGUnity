@@ -23,9 +23,10 @@ public class Inventory : MonoBehaviour {
     // Callback which is triggered when
     // an item gets added/removed.
     public delegate void OnItemChanged( );
-    public OnItemChanged onItemChangedCallback;
-
+    public OnItemChanged onItemAddCallback;
+    public OnItemChanged onItemRemoveCallback;
     public int space = 20;	// Amount of slots in inventory
+    public static int removingSlot;
 
     // Current list of items in inventory
     public List<Item> items = new List<Item>();
@@ -45,15 +46,7 @@ public class Inventory : MonoBehaviour {
             }
             
             items.Add(item);	// Add item to list (built-in function)
-            Debug.Log("added to the inventory script list");
-            
-            if (onItemChangedCallback != null) //not called (is null)
-            {
-                Debug.Log("before on item callback called");
-
-                onItemChangedCallback.Invoke(); //updates UI
-                Debug.Log("after on item callback called");
-            }
+            onItemAddCallback?.Invoke(); //updates UI
         }
 
         return true;
@@ -62,11 +55,20 @@ public class Inventory : MonoBehaviour {
     // Remove an item
     public void Remove (Item item)
     {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (InventoryUI.slots[i].hasbeenpushed) 
+            {
+                removingSlot = i;
+                InventoryUI.slots[i].hasbeenpushed = false;
+                break;
+            }
+        }
+        // Trigger callback
+        onItemRemoveCallback?.Invoke();
+
         items.Remove(item);		// Remove item from list
 
-        // Trigger callback
-        if (onItemChangedCallback != null)
-            onItemChangedCallback.Invoke();
     }
 
 }

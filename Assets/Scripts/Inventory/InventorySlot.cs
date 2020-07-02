@@ -1,52 +1,43 @@
 ﻿﻿using UnityEngine;
- using UnityEngine.UIElements;
- using UnityEngine.UIElements;
+ using UnityEngine.UI;
+ 
 
 /* Sits on all InventorySlots. */
 
 public class InventorySlot : MonoBehaviour
 {
-    public Sprite icon;
-    public Button removeButton;	// Reference to the remove button
-    private Sprite newSprite;
+    static GameObject iconGO;
+    static GameObject removeButton;	// Reference to the remove button
+    Sprite newSprite;
     public Item item;  // Current item in the slot
 
+    public bool hasbeenpushed = false;
     // Add item to the slot
-    public void AddItem (Item addedItem)// Item newItem not set to an instance of an object
+    public void AddItem (Item addedItem)
     {
         item = addedItem;
-        newSprite = icon = item.icon;
+        iconGO = transform.GetChild(2).gameObject;
+        removeButton = transform.GetChild(1).gameObject;
+        
+        iconGO.GetComponent<Image>().enabled = true;
+        iconGO.GetComponent<Image>().sprite = addedItem.icon;
+        removeButton.GetComponent<Button>().interactable = true;
 
-        var childImage = GetComponentInChildren<Image>();
-        childImage.image = item.icon.texture;
-        newSprite = icon;
-        
-        //sprite = newSprite;
-        //icon = sprite;
-        //sprite.texture.Apply();
-        
-        //newSprite = item.icon;
-        //item.icon = newSprite;
-        Debug.Log("Adding " + item.name);
-        
-        
-        Debug.Log("changed slot info");
+        Debug.Log("Added " + addedItem.name + " and changed slot info");
     }
 
     // Clear the slot
     public void ClearSlot ()
     {
-        var image = GetComponent<Image>();
-        item = null;
-
-        //image.sprite = null;
-        image.visible = false;
-        removeButton.visible = false;
+        iconGO.GetComponent<Image>().sprite = null;
+        iconGO.GetComponent<Image>().enabled = false;
+        removeButton.GetComponent<Button>().interactable = false;
     }
 
     // Called when the remove button is pressed
     public void OnRemoveButton ()
     {
+        hasbeenpushed = true;
         Inventory.instance.Remove(item);
     }
 
