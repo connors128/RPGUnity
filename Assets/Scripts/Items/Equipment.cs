@@ -19,6 +19,8 @@ public class Equipment : Item {
     // When pressed in inventory
     public override void Use()
     {
+        Debug.Log("Using Equipment " + name);
+
         base.Use();
         EquipmentManager.instance.Equip(this);	// Equip it
         RemoveFromInventory();					// Remove it from inventory
@@ -26,4 +28,4 @@ public class Equipment : Item {
 
 }
 
-public enum EquipmentSlot { Head, Chest, Legs, Weapon, Shield, Feet }
+public enum EquipmentSlot { Head, Chest, Shirt , Arms, Legs, Pants, Weapon, Shield, Feet }

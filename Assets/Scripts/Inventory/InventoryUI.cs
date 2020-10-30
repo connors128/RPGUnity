@@ -37,21 +37,13 @@ public class InventoryUI : MonoBehaviour {
     void RemoveFromUI()
     {
         int removeSlot = Inventory.removingSlot;
-        Debug.Log(removeSlot);
+        
         slots[removeSlot].ClearSlot();
         slots[removeSlot].item = null;
-        atSlot--;
-        for (; removeSlot < inventory.items.Count; removeSlot++)
+
+        for(atSlot = 0; atSlot < inventory.items.Count; atSlot++)
         {
-            slots[removeSlot].AddItem(slots[removeSlot + 1].item);
-            if(slots[removeSlot].item != null)
-            {
-                slots[removeSlot].ClearSlot();
-                slots[removeSlot].item = null;
-                break;
-            }
-            //slots[removeSlot].item = inventory.items[removeSlot+1];
+            slots[atSlot].AddItem(inventory.items[atSlot]);
         }
-        slots[removeSlot+1].ClearSlot();
     }
 }

@@ -8,6 +8,7 @@ public class InventorySlot : MonoBehaviour
 {
     static GameObject iconGO;
     static GameObject removeButton;	// Reference to the remove button
+
     Sprite newSprite;
     public Item item;  // Current item in the slot
 
@@ -18,12 +19,14 @@ public class InventorySlot : MonoBehaviour
         item = addedItem;
         iconGO = transform.GetChild(2).gameObject;
         removeButton = transform.GetChild(1).gameObject;
+
         
+
         iconGO.GetComponent<Image>().enabled = true;
         iconGO.GetComponent<Image>().sprite = addedItem.icon;
         removeButton.GetComponent<Button>().interactable = true;
 
-        Debug.Log("Added " + addedItem.name + " and changed slot info");
+        //Debug.Log("Added " + addedItem.name + " and changed slot info");
     }
 
     // Clear the slot
